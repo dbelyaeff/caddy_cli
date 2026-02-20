@@ -24,7 +24,7 @@ jobs:
         run: bun install
 
       - name: Build binary
-        run: bun build --target=bun --outdir=dist src/main.ts --outfile=caddy_cli
+        run: bun build --target=bun src/main.ts --outfile=dist/caddy_cli
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
