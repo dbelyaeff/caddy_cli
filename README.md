@@ -1,8 +1,12 @@
 # Caddy CLI
 
-<p align="center">
-  <img src="https://caddyserver.com/resources/images/caddy-logo.png" alt="Caddy CLI" width="200">
-</p>
+```
+   ____          _     _          ____ _     ___ 
+  | |   / _` |/ _` |/ _` | | | | | |   | |    | | 
+  | |__| (_| | (_| | (_| | |_| | | |___| |___ | | 
+   ____\__,_|\__,_|\__,_|\__, |  \____|_____|___|
+                          |___/                   
+```
 
 <p align="center">
   <a href="https://github.com/dbelyaeff/caddy_cli/releases/latest">
