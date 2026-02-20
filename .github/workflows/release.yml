@@ -61,6 +61,6 @@ jobs:
             ./dist/main
             ```
         files: |
-          dist/main
+          dist/main.js
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
