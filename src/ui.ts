@@ -24,9 +24,10 @@ export async function showMainMenu(sites: Site[]): Promise<{ action: Action; sit
 
   if (sites.length > 0) {
     for (const site of sites) {
+      const portDisplay = site.container_port && site.container_port !== "80" ? `:${site.container_port}` : "";
       options.push({
         value: `site:${site.domain}`,
-        label: `${cyan(site.domain)} → ${site.container_name}:${site.container_port || "80"}`
+        label: `${cyan(site.domain)} → ${site.container_name}${portDisplay}`
       });
     }
     options.push({ value: "divider1", label: dim("─".repeat(30)) });
@@ -67,6 +68,8 @@ export async function showMainMenu(sites: Site[]): Promise<{ action: Action; sit
 }
 
 export async function showSiteMenu(site: Site): Promise<{ action: Action; site?: Site }> {
+  const portDisplay = site.container_port && site.container_port !== "80" ? site.container_port : "не указан";
+
   console.log(`
 ${bold("═".repeat(50))}
 ${bold("  Информация о сайте  ".padEnd(50, "═"))}
@@ -74,7 +77,7 @@ ${bold("═".repeat(50))}
 
   ${bold("Домен:")} ${cyan(site.domain)}
   ${bold("Контейнер:")} ${site.container_name}
-  ${bold("Порт:")} ${site.container_port || "80"}
+  ${bold("Порт:")} ${portDisplay}
 
 ${bold("═".repeat(50))}
   `);
@@ -122,9 +125,9 @@ export async function selectContainer(containers: DockerContainer[], sites: Site
   
   if (availableContainers.length > 0) {
     for (const c of availableContainers) {
-      const portsStr = c.ports.length > 0 ? c.ports.join(", ") : "80";
+      const portsStr = c.ports.length > 0 ? c.ports.join(", ") : "порт по умолчанию";
       choices.push({
-        value: `${c.name}:${c.ports[0] || "80"}`,
+        value: `${c.name}:${c.ports[0] || ""}`,
         label: `${c.name} (${portsStr})`
       });
     }
@@ -160,22 +163,24 @@ export async function selectContainer(containers: DockerContainer[], sites: Site
 
 export async function askPort(currentPort?: string): Promise<string | null> {
   const port = await text({
-    message: "Введите порт контейнера:",
-    placeholder: currentPort || "80",
-    initialValue: currentPort || "80",
+    message: "Введите порт контейнера (оставьте пустым для порта по умолчанию):",
+    placeholder: currentPort || "",
+    initialValue: currentPort || "",
     validate: (value) => {
-      if (!/^\d+$/.test(value)) {
+      if (value && !/^\d+$/.test(value)) {
         return "Порт должен быть числом";
       }
-      const portNum = parseInt(value, 10);
-      if (portNum < 1 || portNum > 65535) {
-        return "Порт должен быть от 1 до 65535";
+      if (value) {
+        const portNum = parseInt(value, 10);
+        if (portNum < 1 || portNum > 65535) {
+          return "Порт должен быть от 1 до 65535";
+        }
       }
       return undefined;
     }
   });
 
-  if (!port || typeof port !== "string") return null;
+  if (port === null || typeof port !== "string") return null;
   return port;
 }
 

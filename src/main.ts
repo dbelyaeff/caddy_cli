@@ -136,12 +136,14 @@ async function handleAdd(currentSites: Site[]): Promise<Site[]> {
 }
 
 async function handleEdit(site: Site, currentSites: Site[]): Promise<Site[]> {
-  printInfo(`Текущая конфигурация: ${site.domain} → ${site.container_name}:${site.container_port || "80"}`);
+  const portDisplay = site.container_port && site.container_port !== "80" ? `:${site.container_port}` : "";
+  printInfo(`Текущая конфигурация: ${site.domain} → ${site.container_name}${portDisplay}`);
   
   const container = await selectContainer(containers, currentSites);
   if (!container) return currentSites;
   
-  const confirmed = await confirmAction(`Изменить контейнер на ${container.name}:${container.port}?`);
+  const containerPortDisplay = container.port && container.port !== "80" ? `:${container.port}` : "";
+  const confirmed = await confirmAction(`Изменить контейнер на ${container.name}${containerPortDisplay}?`);
   if (!confirmed) return currentSites;
   
   const newSites = currentSites.map(s => 
@@ -161,12 +163,12 @@ async function handleEdit(site: Site, currentSites: Site[]): Promise<Site[]> {
 }
 
 async function handleEditPort(site: Site, currentSites: Site[]): Promise<Site[]> {
-  printInfo(`Текущий порт: ${site.container_port || "80"}`);
+  printInfo(`Текущий порт: ${site.container_port || "не указан"}`);
   
   const newPort = await askPort(site.container_port);
-  if (!newPort) return currentSites;
+  if (newPort === null) return currentSites;
   
-  const confirmed = await confirmAction(`Изменить порт на ${newPort}?`);
+  const confirmed = await confirmAction(newPort ? `Изменить порт на ${newPort}?` : "Использовать порт по умолчанию?");
   if (!confirmed) return currentSites;
   
   const newSites = currentSites.map(s => 
@@ -175,7 +177,7 @@ async function handleEditPort(site: Site, currentSites: Site[]): Promise<Site[]>
       : s
   );
   
-  printSuccess(`Порт для ${site.domain} изменён на ${newPort}`);
+  printSuccess(newPort ? `Порт для ${site.domain} изменён на ${newPort}` : `Порт для ${site.domain} сброшен на порт по умолчанию`);
   
   const save = await confirmAction("Сохранить конфиг и перезагрузить Caddy?");
   if (save) {
