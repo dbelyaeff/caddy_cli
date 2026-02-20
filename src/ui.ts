@@ -13,7 +13,7 @@ const yellow = (s: string) => `\x1b[33m${s}\x1b[0m`;
 const bold = (s: string) => `\x1b[1m${s}\x1b[0m`;
 const dim = (s: string) => `\x1b[2m${s}\x1b[0m`;
 
-export type Action = "list" | "add" | "edit" | "delete" | "reload" | "quit" | "back" | "site";
+export type Action = "list" | "add" | "edit" | "edit_port" | "delete" | "reload" | "quit" | "back" | "site";
 
 export interface SiteWithAction extends Site {
   action: "edit" | "delete" | "back";
@@ -83,6 +83,7 @@ ${bold("═".repeat(50))}
     message: `Действия с ${site.domain}:`,
     options: [
       { value: "edit", label: green("✎") + " Изменить контейнер" },
+      { value: "edit_port", label: yellow("⚙") + " Изменить порт" },
       { value: "delete", label: red("✕") + " Удалить сайт" },
       { value: "divider", label: dim("─".repeat(30)) },
       { value: "back", label: "← Назад" }
@@ -95,6 +96,10 @@ ${bold("═".repeat(50))}
 
   if (choice === "edit") {
     return { action: "edit", site };
+  }
+
+  if (choice === "edit_port") {
+    return { action: "edit_port" as Action, site };
   }
 
   if (choice === "delete") {
@@ -151,6 +156,27 @@ export async function selectContainer(containers: DockerContainer[], sites: Site
     name,
     port: port || "80"
   };
+}
+
+export async function askPort(currentPort?: string): Promise<string | null> {
+  const port = await text({
+    message: "Введите порт контейнера:",
+    placeholder: currentPort || "80",
+    initialValue: currentPort || "80",
+    validate: (value) => {
+      if (!/^\d+$/.test(value)) {
+        return "Порт должен быть числом";
+      }
+      const portNum = parseInt(value, 10);
+      if (portNum < 1 || portNum > 65535) {
+        return "Порт должен быть от 1 до 65535";
+      }
+      return undefined;
+    }
+  });
+
+  if (!port || typeof port !== "string") return null;
+  return port;
 }
 
 export async function askDomain(): Promise<string | null> {

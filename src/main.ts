@@ -17,6 +17,7 @@ import {
   showSiteMenu,
   selectContainer, 
   askDomain, 
+  askPort,
   confirmAction,
   printSuccess,
   printError,
@@ -159,6 +160,31 @@ async function handleEdit(site: Site, currentSites: Site[]): Promise<Site[]> {
   return newSites;
 }
 
+async function handleEditPort(site: Site, currentSites: Site[]): Promise<Site[]> {
+  printInfo(`Текущий порт: ${site.container_port || "80"}`);
+  
+  const newPort = await askPort(site.container_port);
+  if (!newPort) return currentSites;
+  
+  const confirmed = await confirmAction(`Изменить порт на ${newPort}?`);
+  if (!confirmed) return currentSites;
+  
+  const newSites = currentSites.map(s => 
+    s.domain === site.domain 
+      ? { ...s, container_port: newPort }
+      : s
+  );
+  
+  printSuccess(`Порт для ${site.domain} изменён на ${newPort}`);
+  
+  const save = await confirmAction("Сохранить конфиг и перезагрузить Caddy?");
+  if (save) {
+    await saveAndReload(newSites);
+  }
+  
+  return newSites;
+}
+
 async function handleDelete(site: Site, currentSites: Site[]): Promise<Site[]> {
   const confirmed = await confirmAction(`Удалить сайт ${site.domain}?`);
   if (!confirmed) return currentSites;
@@ -223,6 +249,10 @@ async function main(): Promise<void> {
             
             if (siteResult.action === "edit") {
               sites = await handleEdit(result.site, sites);
+            }
+            
+            if (siteResult.action === "edit_port") {
+              sites = await handleEditPort(result.site, sites);
             }
             
             if (siteResult.action === "delete") {

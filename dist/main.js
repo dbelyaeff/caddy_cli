@@ -2696,11 +2696,12 @@ function printBanner() {
     console.log(banner);
   } catch {
     console.log(`
-  ____          _     _          ____ _     ___ 
- | |   / _\` |/ _\` |/ _\` | | | | | |   | |    | | 
- | |__| (_| | (_| | (_| | |_| | | |___| |___ | | 
-  \\____\\__,_|\\__,_|\\__,_|\\__, |  \\____|_____|___|
-                          |___/                   
+   \u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2557  \u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2557   \u2588\u2588\u2557\u2588\u2588\u2557     \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557     \u2588\u2588\u2557      \u2588\u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557
+  \u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255D\u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2551   \u2588\u2588\u2551\u2588\u2588\u2551     \u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255D     \u2588\u2588\u2551     \u2588\u2588\u2554\u2550\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255D\u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255D
+  \u2588\u2588\u2551     \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2554\u255D\u2588\u2588\u2551   \u2588\u2588\u2551\u2588\u2588\u2551     \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557     \u2588\u2588\u2551     \u2588\u2588\u2551   \u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2588\u2588\u2588\u2557  
+  \u2588\u2588\u2551     \u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2551   \u2588\u2588\u2551\u2588\u2588\u2551     \u255A\u2550\u2550\u2550\u2550\u2588\u2588\u2551     \u2588\u2588\u2551     \u2588\u2588\u2551   \u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u255D  \u2588\u2588\u2554\u2550\u2550\u255D  
+  \u255A\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2554\u255D\u255A\u2588\u2588\u2588\u2588\u2588\u2588\u2554\u255D\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551     \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u255A\u2588\u2588\u2588\u2588\u2588\u2588\u2554\u255D\u2588\u2588\u2551     \u2588\u2588\u2551     
+   \u255A\u2550\u2550\u2550\u2550\u2550\u255D\u255A\u2550\u255D  \u255A\u2550\u255D\u255A\u2550\u255D  \u255A\u2550\u255D\u255A\u2550\u2550\u2550\u2550\u2550\u255D  \u255A\u2550\u2550\u2550\u2550\u2550\u255D \u255A\u2550\u2550\u2550\u2550\u2550\u2550\u255D\u255A\u2550\u2550\u2550\u2550\u2550\u2550\u255D     \u255A\u2550\u2550\u2550\u2550\u2550\u2550\u255D \u255A\u2550\u2550\u2550\u2550\u2550\u255D \u255A\u2550\u255D     \u255A\u2550\u255D     
     `);
   }
 }
@@ -2763,6 +2764,7 @@ ${bold("\u2550".repeat(50))}
     message: `\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u044F \u0441 ${site.domain}:`,
     options: [
       { value: "edit", label: green("\u270E") + " \u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u043A\u043E\u043D\u0442\u0435\u0439\u043D\u0435\u0440" },
+      { value: "edit_port", label: yellow("\u2699") + " \u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u043F\u043E\u0440\u0442" },
       { value: "delete", label: red("\u2715") + " \u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u0430\u0439\u0442" },
       { value: "divider", label: dim("\u2500".repeat(30)) },
       { value: "back", label: "\u2190 \u041D\u0430\u0437\u0430\u0434" }
@@ -2773,6 +2775,9 @@ ${bold("\u2550".repeat(50))}
   }
   if (choice === "edit") {
     return { action: "edit", site };
+  }
+  if (choice === "edit_port") {
+    return { action: "edit_port", site };
   }
   if (choice === "delete") {
     return { action: "delete", site };
@@ -2816,6 +2821,26 @@ async function selectContainer(containers, sites) {
     name,
     port: port || "80"
   };
+}
+async function askPort(currentPort) {
+  const port = await te({
+    message: "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043F\u043E\u0440\u0442 \u043A\u043E\u043D\u0442\u0435\u0439\u043D\u0435\u0440\u0430:",
+    placeholder: currentPort || "80",
+    initialValue: currentPort || "80",
+    validate: (value) => {
+      if (!/^\d+$/.test(value)) {
+        return "\u041F\u043E\u0440\u0442 \u0434\u043E\u043B\u0436\u0435\u043D \u0431\u044B\u0442\u044C \u0447\u0438\u0441\u043B\u043E\u043C";
+      }
+      const portNum = parseInt(value, 10);
+      if (portNum < 1 || portNum > 65535) {
+        return "\u041F\u043E\u0440\u0442 \u0434\u043E\u043B\u0436\u0435\u043D \u0431\u044B\u0442\u044C \u043E\u0442 1 \u0434\u043E 65535";
+      }
+      return;
+    }
+  });
+  if (!port || typeof port !== "string")
+    return null;
+  return port;
 }
 async function askDomain() {
   const domain = await te({
@@ -2955,6 +2980,22 @@ async function handleEdit(site, currentSites) {
   }
   return newSites;
 }
+async function handleEditPort(site, currentSites) {
+  printInfo(`\u0422\u0435\u043A\u0443\u0449\u0438\u0439 \u043F\u043E\u0440\u0442: ${site.container_port || "80"}`);
+  const newPort = await askPort(site.container_port);
+  if (!newPort)
+    return currentSites;
+  const confirmed = await confirmAction(`\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u043F\u043E\u0440\u0442 \u043D\u0430 ${newPort}?`);
+  if (!confirmed)
+    return currentSites;
+  const newSites = currentSites.map((s) => s.domain === site.domain ? { ...s, container_port: newPort } : s);
+  printSuccess(`\u041F\u043E\u0440\u0442 \u0434\u043B\u044F ${site.domain} \u0438\u0437\u043C\u0435\u043D\u0451\u043D \u043D\u0430 ${newPort}`);
+  const save = await confirmAction("\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C \u043A\u043E\u043D\u0444\u0438\u0433 \u0438 \u043F\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C Caddy?");
+  if (save) {
+    await saveAndReload(newSites);
+  }
+  return newSites;
+}
 async function handleDelete(site, currentSites) {
   const confirmed = await confirmAction(`\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u0430\u0439\u0442 ${site.domain}?`);
   if (!confirmed)
@@ -3005,6 +3046,9 @@ async function main() {
             }
             if (siteResult.action === "edit") {
               sites = await handleEdit(result.site, sites);
+            }
+            if (siteResult.action === "edit_port") {
+              sites = await handleEditPort(result.site, sites);
             }
             if (siteResult.action === "delete") {
               sites = await handleDelete(result.site, sites);

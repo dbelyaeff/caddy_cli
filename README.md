@@ -1,11 +1,12 @@
 # Caddy CLI
 
 ```
-   ____          _     _          ____ _     ___ 
-  | |   / _` |/ _` |/ _` | | | | | |   | |    | | 
-  | |__| (_| | (_| | (_| | |_| | | |___| |___ | | 
-   ____\__,_|\__,_|\__,_|\__, |  \____|_____|___|
-                          |___/                   
+   ██████╗██╗  ██╗ █████╗ ██████╗ ██╗   ██╗██╗     ███████╗     ██╗      ██████╗ ███████╗███████╗
+  ██╔════╝██║  ██║██╔══██╗██╔══██╗██║   ██║██║     ██╔════╝     ██║     ██╔═══██╗██╔════╝██╔════╝
+  ██║     ███████║███████║██████╔╝██║   ██║██║     ███████╗     ██║     ██║   ██║█████╗  █████╗  
+  ██║     ██╔══██║██╔══██║██╔══██╗██║   ██║██║     ╚════██║     ██║     ██║   ██║██╔══╝  ██╔══╝  
+  ╚██████╗██║  ██║██║  ██║██████╔╝╚██████╔╝███████╗███████║     ███████╗╚██████╔╝██║     ██║     
+   ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚══════╝╚══════╝     ╚══════╝ ╚═════╝ ╚═╝     ╚═╝     
 ```
 
 <p align="center">
@@ -89,7 +90,7 @@ On first launch, the app will:
 
 ### Path Settings
 
-The app stores the Caddy path in memory during session. Default path: `../caddy`
+The app saves the Caddy path to `~/.caddy-cli/config.json`. On first launch, you'll be asked to specify the path to your Caddy folder. This path is then remembered for future sessions.
 
 ### Docker Network
 
@@ -128,9 +129,10 @@ caddy_cli/
 ├── src/
 │   ├── main.ts        # Application entry point
 │   ├── caddyfile.ts   # Caddyfile parser and generator
+│   ├── config.ts      # User configuration management
 │   ├── docker.ts      # Docker API integration
 │   ├── ui.ts          # Terminal UI components
-│   └── banner.ts     # ASCII banner generator
+│   └── banner.ts      # ASCII banner generator
 ├── package.json
 └── tsconfig.json
 ```
