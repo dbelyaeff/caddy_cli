@@ -58,7 +58,7 @@ jobs:
 
             ```bash
             # Run the binary
-            ./dist/main
+            ./dist/main.js
             ```
         files: |
           dist/main.js
