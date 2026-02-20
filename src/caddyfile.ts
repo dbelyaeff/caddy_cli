@@ -105,7 +105,7 @@ export function generateCaddyfile(sites: Site[], existingContent: string): strin
   }
   
   for (const site of sites) {
-    const port = site.container_port ? `:${site.container_port}` : "";
+    const port = site.container_port && site.container_port !== "80" ? `:${site.container_port}` : "";
     result += `${site.domain} {\n`;
     if (hasSharedSnippets) {
       result += `\timport shared ${site.domain}\n`;
