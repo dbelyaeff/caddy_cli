@@ -10,6 +10,7 @@ import {
   getCaddyfilePath,
   type Site
 } from "./caddyfile";
+import { loadConfig, saveConfig } from "./config";
 import { printBanner } from "./banner";
 import { 
   showMainMenu, 
@@ -26,6 +27,20 @@ import {
 let containers: DockerContainer[] = [];
 
 async function setupCaddyPath(): Promise<boolean> {
+  const savedConfig = await loadConfig();
+  
+  if (savedConfig?.caddyPath) {
+    setCaddyPath(savedConfig.caddyPath);
+    const caddyfilePath = getCaddyfilePath();
+    
+    if (existsSync(caddyfilePath)) {
+      printSuccess(`Используется сохранённый путь: ${savedConfig.caddyPath}`);
+      return true;
+    }
+    
+    printInfo(`Сохранённый путь недействителен: ${savedConfig.caddyPath}`);
+  }
+  
   console.log("");
   console.log(`
 ┌─────────────────────────────────────────────────────────┐
@@ -60,7 +75,8 @@ async function setupCaddyPath(): Promise<boolean> {
     return false;
   }
   
-  printSuccess(`Используется путь: ${caddyPath}`);
+  await saveConfig({ caddyPath });
+  printSuccess(`Путь сохранён: ${caddyPath}`);
   return true;
 }
 

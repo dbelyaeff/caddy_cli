@@ -986,7 +986,7 @@ var init_dist2 = __esm(() => {
 });
 
 // src/main.ts
-import { existsSync as existsSync3 } from "fs";
+import { existsSync as existsSync4 } from "fs";
 
 // src/docker.ts
 async function runDockerCommand(args) {
@@ -1251,6 +1251,31 @@ async function saveSites(sites) {
 async function writeCaddyfile(content) {
   const path = getCaddyfilePath();
   await writeFile(path, content, "utf-8");
+}
+
+// src/config.ts
+import { readFile as readFile2, writeFile as writeFile2, mkdir } from "fs/promises";
+import { existsSync as existsSync2 } from "fs";
+import { homedir } from "os";
+import { join } from "path";
+var CONFIG_DIR = join(homedir(), ".caddy-cli");
+var CONFIG_FILE = join(CONFIG_DIR, "config.json");
+async function loadConfig() {
+  try {
+    if (!existsSync2(CONFIG_FILE)) {
+      return null;
+    }
+    const content = await readFile2(CONFIG_FILE, "utf-8");
+    return JSON.parse(content);
+  } catch {
+    return null;
+  }
+}
+async function saveConfig(config) {
+  if (!existsSync2(CONFIG_DIR)) {
+    await mkdir(CONFIG_DIR, { recursive: true });
+  }
+  await writeFile2(CONFIG_FILE, JSON.stringify(config, null, 2), "utf-8");
 }
 
 // node_modules/figlet/dist/node-figlet.mjs
@@ -2642,16 +2667,16 @@ nodeFiglet.fontsSync = function() {
 };
 
 // src/banner.ts
-import { existsSync as existsSync2 } from "fs";
-import { join as join2 } from "path";
+import { existsSync as existsSync3 } from "fs";
+import { join as join3 } from "path";
 function findFontPath(fontName) {
   const possiblePaths = [
     "/usr/local/share/caddy_cli/fonts",
-    join2(process.cwd(), "node_modules", "figlet", "fonts")
+    join3(process.cwd(), "node_modules", "figlet", "fonts")
   ];
   for (const fontPath2 of possiblePaths) {
-    const fontFile = join2(fontPath2, `${fontName}.flf`);
-    if (existsSync2(fontFile)) {
+    const fontFile = join3(fontPath2, `${fontName}.flf`);
+    if (existsSync3(fontFile)) {
       return fontFile;
     }
   }
@@ -2826,6 +2851,16 @@ function printInfo(message) {
 // src/main.ts
 var containers = [];
 async function setupCaddyPath() {
+  const savedConfig = await loadConfig();
+  if (savedConfig?.caddyPath) {
+    setCaddyPath(savedConfig.caddyPath);
+    const caddyfilePath2 = getCaddyfilePath();
+    if (existsSync4(caddyfilePath2)) {
+      printSuccess(`\u0418\u0441\u043F\u043E\u043B\u044C\u0437\u0443\u0435\u0442\u0441\u044F \u0441\u043E\u0445\u0440\u0430\u043D\u0451\u043D\u043D\u044B\u0439 \u043F\u0443\u0442\u044C: ${savedConfig.caddyPath}`);
+      return true;
+    }
+    printInfo(`\u0421\u043E\u0445\u0440\u0430\u043D\u0451\u043D\u043D\u044B\u0439 \u043F\u0443\u0442\u044C \u043D\u0435\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0442\u0435\u043B\u0435\u043D: ${savedConfig.caddyPath}`);
+  }
   console.log("");
   console.log(`
 \u250C\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510
@@ -2850,11 +2885,12 @@ async function setupCaddyPath() {
   const caddyPath = (typeof pathInput === "string" ? pathInput : defaultPath) || defaultPath;
   setCaddyPath(caddyPath);
   const caddyfilePath = getCaddyfilePath();
-  if (!existsSync3(caddyfilePath)) {
+  if (!existsSync4(caddyfilePath)) {
     printError(`Caddyfile \u043D\u0435 \u043D\u0430\u0439\u0434\u0435\u043D \u043F\u043E \u043F\u0443\u0442\u0438: ${caddyfilePath}`);
     return false;
   }
-  printSuccess(`\u0418\u0441\u043F\u043E\u043B\u044C\u0437\u0443\u0435\u0442\u0441\u044F \u043F\u0443\u0442\u044C: ${caddyPath}`);
+  await saveConfig({ caddyPath });
+  printSuccess(`\u041F\u0443\u0442\u044C \u0441\u043E\u0445\u0440\u0430\u043D\u0451\u043D: ${caddyPath}`);
   return true;
 }
 async function saveAndReload(sites) {
