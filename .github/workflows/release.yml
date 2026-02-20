@@ -27,7 +27,7 @@ jobs:
         run: bun build --target=bun --outdir=dist src/main.ts
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           draft: false
           prerelease: false
@@ -60,7 +60,5 @@ jobs:
             # Run the binary
             ./dist/main.js
             ```
-        files: |
-          dist/main.js
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
