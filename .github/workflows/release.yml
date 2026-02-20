@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build binary
+        run: bun build --target=bun --outdir=dist src/main.ts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          name: ${{ github.ref_name }}
+          body: |
+            ## What's New in ${{ github.ref_name }}
+
+            This release includes:
+            - Interactive TUI for managing Caddy configuration
+            - Real-time Caddyfile parsing and generation
+            - Docker container detection in `caddy` network
+            - Site management (add, edit, delete)
+            - Auto-reload Caddy after configuration changes
+            - ASCII banner with figlet
+
+            ### Installation
+
+            Download the binary for your platform:
+            - `caddy_cli` - Linux x64 binary
+
+            ### Requirements
+
+            - Bun runtime (for development)
+            - Docker with Caddy container in `caddy` network
+
+            ### Quick Start
+
+            ```bash
+            # Run the binary
+            ./dist/main
+            ```
+        files: |
+          dist/main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
