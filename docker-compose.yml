@@ -1,0 +1,20 @@
+services:
+  caddy_cli:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: caddy_cli
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./caddy/config:/app/caddy/config
+      - ./data:/app/data
+    environment:
+      - CADDY_DATA_PATH=/app/caddy/data
+      - CADDY_CONFIG_PATH=/app/caddy/config
+    networks:
+      - caddy
+    restart: unless-stopped
+
+networks:
+  caddy:
+    external: true

@@ -5,66 +5,62 @@
 ██╔════╝██╔══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝    ██╔════╝██║     ██║
 ██║     ███████║██║  ██║██║  ██║ ╚████╔╝     ██║     ██║     ██║
 ██║     ██╔══██║██║  ██║██║  ██║  ╚██╔╝      ██║     ██║     ██║
-╚██████╗██║  ██║██████╔╝██████╔╝   ██║       ╚██████╗███████╗██║
+╚██████╗██║  ██║██████╔╝██████╔╝   ██╗       ╚██████╗███████╗██║
  ╚═════╝╚═╝  ╚═╝╚═════╝ ╚═════╝    ╚═╝        ╚═════╝╚══════╝╚═╝
-                                                                
+
 ```
 
-<p align="center">
-  <a href="https://github.com/dbelyaeff/caddy_cli/releases/latest">
-    <img src="https://img.shields.io/github/v/release/dbelyaeff/caddy_cli?include_prereleases&style=flat-square" alt="Latest Release">
-  </a>
-  <a href="https://github.com/dbelyaeff/caddy_cli/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/dbelyaeff/caddy_cli?style=flat-square" alt="License">
-  </a>
-  <a href="https://github.com/dbelyaeff/caddy_cli/actions">
-    <img src="https://img.shields.io/github/actions/workflow/status/dbelyaeff/caddy_cli/ci.yml?style=flat-square" alt="CI">
-  </a>
-</p>
+> Современный CLI-инструмент для управления конфигурацией веб-сервера Caddy с интеграцией Docker
 
-> Modern CLI tool for managing Caddy web server configuration with Docker integration
+## Возможности
 
-## ✨ Features
+- **Интерактивный интерфейс** - Красивый терминальный интерфейс на базе clack/prompts
+- **Работа с Caddyfile** - Чтение и запись напрямую в Caddyfile
+- **Интеграция с Docker** - Автоматическое определение контейнеров в сети `caddy`
+- **Умная фильтрация** - Показывать только неиспользуемые контейнеры при добавлении сайтов
+- **Автоперезагрузка** - Автоматическая перезагрузка Caddy после изменений конфигурации
 
-- **Interactive TUI** - Beautiful terminal interface built with clack/prompts
-- **Real-time Configuration** - Read and write directly to Caddyfile
-- **Docker Integration** - Automatically detect containers in the `caddy` network
-- **Smart Filtering** - Show only unassigned containers when adding new sites
-- **Auto-reload** - Automatically reload Caddy after configuration changes
-- **No Database** - Works directly with Caddyfile, no extra storage needed
+## Требования
 
-## 🚀 Quick Start
+- [Bun](https://bun.sh/) - Runtime
+- [Docker](https://www.docker.com/) - Docker должен быть установлен и запущен
+- Docker Compose - Для запуска Caddy в контейнере
+
+## Установка
 
 ```bash
-# Clone the repository
+# Клонировать репозиторий
 git clone https://github.com/dbelyaeff/caddy_cli.git
 cd caddy_cli
 
-# Install dependencies
+# Установить зависимости
 bun install
 
-# Run the application
-bun run src/main.ts
+# Собрать бинарник
+bun build --target=bun ./src/main.ts --outdir=dist
+
+# Установить в систему
+sudo cp dist/main.js /usr/local/bin/caddy-cli
+sudo chmod +x /usr/local/bin/caddy-cli
 ```
 
-## 📋 Requirements
+## Быстрый старт
 
-- [Bun](https://bun.sh/) runtime
-- [Docker](https://www.docker.com/) with running Caddy container
-- Caddy container connected to `caddy` network
-- Docker socket accessible
+```bash
+# Запуск приложения
+caddy-cli
+```
 
-## 🎯 Usage
+### Первый запуск
 
-### First Launch
+При первом запуске приложение:
 
-On first launch, the app will:
-1. Show requirements (Caddy in Docker, network configuration)
-2. Ask for path to Caddy folder (default: `../caddy`)
-3. Parse existing Caddyfile and import all sites
-4. Scan Docker for containers in `caddy` network
+1. Проверит наличие Docker
+2. Создаст сеть `caddy` в Docker (если её нет)
+3. Создаст файлы конфигурации Caddy (docker-compose.yml и Caddyfile) в указанной папке
+4. Спросит путь к папке с Caddy (по умолчанию: `../caddy`)
 
-### Main Menu
+### Главное меню
 
 ```
 ┌─────────────────────────────────────┐
@@ -80,25 +76,22 @@ On first launch, the app will:
 └─────────────────────────────────────┘
 ```
 
-### Site Management
+## Как добавить сайт
 
-- **View sites** - All sites displayed in main menu
-- **Select site** - Click to see details and actions
-- **Edit** - Change container assignment
-- **Delete** - Remove site from configuration
+### Шаг 1: Запустите Caddy
 
-## ⚙️ Configuration
+Перейдите в папку с Caddy и запустите контейнеры:
 
-### Path Settings
+```bash
+cd ../caddy
+docker-compose up -d
+```
 
-The app saves the Caddy path to `~/.caddy-cli/config.json`. On first launch, you'll be asked to specify the path to your Caddy folder. This path is then remembered for future sessions.
+### Шаг 2: Подключите ваш сервис к сети Caddy
 
-### Docker Network
-
-The app looks for containers in the `caddy` network. Make sure your containers are connected:
+Ваш Docker-контейнер должен быть в сети `caddy`. Добавьте в ваш `docker-compose.yml`:
 
 ```yaml
-# docker-compose.yml example
 services:
   myapp:
     image: myapp:latest
@@ -108,58 +101,60 @@ services:
 networks:
   caddy:
     external: true
+    name: caddy
 ```
 
-## 🏗️ Development
+Затем перезапустите контейнеры:
 
 ```bash
-# Install dependencies
-bun install
-
-# Run in development mode (with hot reload)
-bun run dev
-
-# Build for production
-bun build --target=bun ./src/main.ts --outdir=dist
+docker-compose up -d
 ```
 
-## 📁 Project Structure
+### Шаг 3: Добавьте сайт через CLI
+
+```bash
+caddy-cli
+```
+
+В меню выберите "Добавить сайт", введите домен и выберите контейнер из списка.
+
+## Конфигурация
+
+### Пути
+
+Приложение сохраняет путь к папке Caddy в `~/.caddy-cli/config.json`.
+
+По умолчанию:
+- Caddyfile: `./caddy/config/Caddyfile`
+- Docker socket: `/var/run/docker.sock`
+
+### Сеть Caddy
+
+Приложение ищет контейнеры в сети `caddy`. Убедитесь, что ваши контейнеры подключены к этой сети.
+
+## Структура проекта
 
 ```
 caddy_cli/
 ├── src/
-│   ├── main.ts        # Application entry point
-│   ├── caddyfile.ts   # Caddyfile parser and generator
-│   ├── config.ts      # User configuration management
-│   ├── docker.ts      # Docker API integration
-│   ├── ui.ts          # Terminal UI components
-│   └── banner.ts      # ASCII banner generator
+│   ├── main.ts        # Точка входа
+│   ├── caddyfile.ts   # Парсинг и генерация Caddyfile
+│   ├── config.ts      # Управление конфигурацией
+│   ├── docker.ts      # Интеграция с Docker API
+│   ├── ui.ts          # Компоненты интерфейса
+│   ├── banner.ts      # ASCII баннер
+│   └── setup.ts       # Проверка и настройка системы
+├── templates/
+│   ├── docker-compose.yml  # Шаблон для запуска Caddy
+│   └── Caddyfile           # Базовый конфиг Caddy
 ├── package.json
 └── tsconfig.json
 ```
 
-## 🤝 Contributing
+## Лицензия
 
-Contributions are welcome! Please read our [contributing guidelines](CONTRIBUTING.md) first.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- [Caddy](https://caddyserver.com/) - The ultimate server with automatic HTTPS
-- [Bun](https://bun.sh/) - Incredibly fast JavaScript runtime
-- [Clack](https://github.com/natemoo-re/clack) - Beautiful TUI components
+MIT License - подробности в файле [LICENSE](LICENSE)
 
 ---
 
-<p align="center">
-  Made with ❤️ by <a href="https://github.com/dbelyaeff">dbelyaeff</a>
-</p>
+Сделано с ❤️ от [dbelyaeff](https://github.com/dbelyaeff)

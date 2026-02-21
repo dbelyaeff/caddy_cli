@@ -24,6 +24,7 @@ import {
   printInfo,
   type Action
 } from "./ui";
+import { runSystemCheck, checkCaddyFiles } from "./setup";
 
 let containers: DockerContainer[] = [];
 
@@ -71,6 +72,12 @@ async function setupCaddyPath(): Promise<boolean> {
   setCaddyPath(caddyPath);
   
   const caddyfilePath = getCaddyfilePath();
+  const filesCheck = checkCaddyFiles(caddyPath);
+  
+  if (!filesCheck.dockerCompose || !filesCheck.caddyfile) {
+    await runSystemCheck(caddyPath);
+  }
+  
   if (!existsSync(caddyfilePath)) {
     printError(`Caddyfile не найден по пути: ${caddyfilePath}`);
     return false;
