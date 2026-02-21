@@ -112,6 +112,7 @@ export function generateCaddyfile(sites: Site[], existingContent: string): strin
     } else {
       result += `\tencode zstd gzip\n`;
     }
+    result += `\tlog {\n\t\toutput file ./logs/${site.domain}.log\n\t}\n`;
     result += `\treverse_proxy ${site.container_name}${port}\n`;
     result += `}\n\n`;
   }

@@ -986,7 +986,7 @@ var init_dist2 = __esm(() => {
 });
 
 // src/main.ts
-import { existsSync as existsSync4 } from "fs";
+import { existsSync as existsSync5 } from "fs";
 
 // src/docker.ts
 async function runDockerCommand(args) {
@@ -1162,7 +1162,7 @@ function generateCaddyfile(sites, existingContent) {
 `;
   }
   for (const site of sites) {
-    const port = site.container_port ? `:${site.container_port}` : "";
+    const port = site.container_port && site.container_port !== "80" ? `:${site.container_port}` : "";
     result += `${site.domain} {
 `;
     if (hasSharedSnippets) {
@@ -2696,12 +2696,13 @@ function printBanner() {
     console.log(banner);
   } catch {
     console.log(`
-   \u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2557  \u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2557   \u2588\u2588\u2557\u2588\u2588\u2557     \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557     \u2588\u2588\u2557      \u2588\u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557
-  \u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255D\u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2551   \u2588\u2588\u2551\u2588\u2588\u2551     \u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255D     \u2588\u2588\u2551     \u2588\u2588\u2554\u2550\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255D\u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255D
-  \u2588\u2588\u2551     \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2554\u255D\u2588\u2588\u2551   \u2588\u2588\u2551\u2588\u2588\u2551     \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557     \u2588\u2588\u2551     \u2588\u2588\u2551   \u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2588\u2588\u2588\u2557  
-  \u2588\u2588\u2551     \u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2551   \u2588\u2588\u2551\u2588\u2588\u2551     \u255A\u2550\u2550\u2550\u2550\u2588\u2588\u2551     \u2588\u2588\u2551     \u2588\u2588\u2551   \u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u255D  \u2588\u2588\u2554\u2550\u2550\u255D  
-  \u255A\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2554\u255D\u255A\u2588\u2588\u2588\u2588\u2588\u2588\u2554\u255D\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551     \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u255A\u2588\u2588\u2588\u2588\u2588\u2588\u2554\u255D\u2588\u2588\u2551     \u2588\u2588\u2551     
-   \u255A\u2550\u2550\u2550\u2550\u2550\u255D\u255A\u2550\u255D  \u255A\u2550\u255D\u255A\u2550\u255D  \u255A\u2550\u255D\u255A\u2550\u2550\u2550\u2550\u2550\u255D  \u255A\u2550\u2550\u2550\u2550\u2550\u255D \u255A\u2550\u2550\u2550\u2550\u2550\u2550\u255D\u255A\u2550\u2550\u2550\u2550\u2550\u2550\u255D     \u255A\u2550\u2550\u2550\u2550\u2550\u2550\u255D \u255A\u2550\u2550\u2550\u2550\u2550\u255D \u255A\u2550\u255D     \u255A\u2550\u255D     
+ \u2588\u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2557   \u2588\u2588\u2557     \u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2557     \u2588\u2588\u2557
+\u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255D\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u255A\u2588\u2588\u2557 \u2588\u2588\u2554\u255D    \u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255D\u2588\u2588\u2551     \u2588\u2588\u2551
+\u2588\u2588\u2551     \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2551  \u2588\u2588\u2551 \u255A\u2588\u2588\u2588\u2588\u2554\u255D     \u2588\u2588\u2551     \u2588\u2588\u2551     \u2588\u2588\u2551
+\u2588\u2588\u2551     \u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2551\u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2551  \u2588\u2588\u2551  \u255A\u2588\u2588\u2554\u255D      \u2588\u2588\u2551     \u2588\u2588\u2551     \u2588\u2588\u2551
+\u255A\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2554\u255D\u2588\u2588\u2588\u2588\u2588\u2588\u2554\u255D   \u2588\u2588\u2551       \u255A\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2551
+ \u255A\u2550\u2550\u2550\u2550\u2550\u255D\u255A\u2550\u255D  \u255A\u2550\u255D\u255A\u2550\u2550\u2550\u2550\u2550\u255D \u255A\u2550\u2550\u2550\u2550\u2550\u255D    \u255A\u2550\u255D        \u255A\u2550\u2550\u2550\u2550\u2550\u255D\u255A\u2550\u2550\u2550\u2550\u2550\u2550\u255D\u255A\u2550\u255D
+                                                                
     `);
   }
 }
@@ -2718,9 +2719,10 @@ async function showMainMenu(sites) {
   const options = [];
   if (sites.length > 0) {
     for (const site of sites) {
+      const portDisplay = site.container_port && site.container_port !== "80" ? `:${site.container_port}` : "";
       options.push({
         value: `site:${site.domain}`,
-        label: `${cyan(site.domain)} \u2192 ${site.container_name}:${site.container_port || "80"}`
+        label: `${cyan(site.domain)} \u2192 ${site.container_name}${portDisplay}`
       });
     }
     options.push({ value: "divider1", label: dim("\u2500".repeat(30)) });
@@ -2749,6 +2751,7 @@ async function showMainMenu(sites) {
   return { action: "quit" };
 }
 async function showSiteMenu(site) {
+  const portDisplay = site.container_port && site.container_port !== "80" ? site.container_port : "\u043D\u0435 \u0443\u043A\u0430\u0437\u0430\u043D";
   console.log(`
 ${bold("\u2550".repeat(50))}
 ${bold("  \u0418\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F \u043E \u0441\u0430\u0439\u0442\u0435  ".padEnd(50, "\u2550"))}
@@ -2756,7 +2759,7 @@ ${bold("\u2550".repeat(50))}
 
   ${bold("\u0414\u043E\u043C\u0435\u043D:")} ${cyan(site.domain)}
   ${bold("\u041A\u043E\u043D\u0442\u0435\u0439\u043D\u0435\u0440:")} ${site.container_name}
-  ${bold("\u041F\u043E\u0440\u0442:")} ${site.container_port || "80"}
+  ${bold("\u041F\u043E\u0440\u0442:")} ${portDisplay}
 
 ${bold("\u2550".repeat(50))}
   `);
@@ -2793,9 +2796,9 @@ async function selectContainer(containers, sites) {
   const choices = [];
   if (availableContainers.length > 0) {
     for (const c2 of availableContainers) {
-      const portsStr = c2.ports.length > 0 ? c2.ports.join(", ") : "80";
+      const portsStr = c2.ports.length > 0 ? c2.ports.join(", ") : "\u043F\u043E\u0440\u0442 \u043F\u043E \u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E";
       choices.push({
-        value: `${c2.name}:${c2.ports[0] || "80"}`,
+        value: `${c2.name}:${c2.ports[0] || ""}`,
         label: `${c2.name} (${portsStr})`
       });
     }
@@ -2824,21 +2827,23 @@ async function selectContainer(containers, sites) {
 }
 async function askPort(currentPort) {
   const port = await te({
-    message: "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043F\u043E\u0440\u0442 \u043A\u043E\u043D\u0442\u0435\u0439\u043D\u0435\u0440\u0430:",
-    placeholder: currentPort || "80",
-    initialValue: currentPort || "80",
+    message: "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043F\u043E\u0440\u0442 \u043A\u043E\u043D\u0442\u0435\u0439\u043D\u0435\u0440\u0430 (\u043E\u0441\u0442\u0430\u0432\u044C\u0442\u0435 \u043F\u0443\u0441\u0442\u044B\u043C \u0434\u043B\u044F \u043F\u043E\u0440\u0442\u0430 \u043F\u043E \u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E):",
+    placeholder: currentPort || "",
+    initialValue: currentPort || "",
     validate: (value) => {
-      if (!/^\d+$/.test(value)) {
+      if (value && !/^\d+$/.test(value)) {
         return "\u041F\u043E\u0440\u0442 \u0434\u043E\u043B\u0436\u0435\u043D \u0431\u044B\u0442\u044C \u0447\u0438\u0441\u043B\u043E\u043C";
       }
-      const portNum = parseInt(value, 10);
-      if (portNum < 1 || portNum > 65535) {
-        return "\u041F\u043E\u0440\u0442 \u0434\u043E\u043B\u0436\u0435\u043D \u0431\u044B\u0442\u044C \u043E\u0442 1 \u0434\u043E 65535";
+      if (value) {
+        const portNum = parseInt(value, 10);
+        if (portNum < 1 || portNum > 65535) {
+          return "\u041F\u043E\u0440\u0442 \u0434\u043E\u043B\u0436\u0435\u043D \u0431\u044B\u0442\u044C \u043E\u0442 1 \u0434\u043E 65535";
+        }
       }
       return;
     }
   });
-  if (!port || typeof port !== "string")
+  if (port === null || typeof port !== "string")
     return null;
   return port;
 }
@@ -2873,6 +2878,130 @@ function printInfo(message) {
   console.log(cyan(`\u2139 ${message}`));
 }
 
+// src/setup.ts
+import { existsSync as existsSync4, mkdirSync, copyFileSync } from "fs";
+import { join as join4 } from "path";
+import { spawn } from "child_process";
+import { fileURLToPath as fileURLToPath2 } from "url";
+import { dirname as dirname2 } from "path";
+var __filename3 = fileURLToPath2(import.meta.url);
+var __dirname3 = dirname2(__filename3);
+var TEMPLATES_DIR = join4(__dirname3, "..", "templates");
+function printCheck(result) {
+  const icon = result.status === "success" ? "\u2705" : result.status === "error" ? "\u274C" : result.status === "info" ? "\u2139\uFE0F" : "\u23F3";
+  console.log(`${icon} ${result.name}: ${result.message}`);
+}
+async function checkDockerInstalled() {
+  try {
+    const proc = spawn("docker", ["--version"], { stdio: "pipe" });
+    await new Promise((resolve) => {
+      proc.on("close", () => resolve());
+    });
+    if (proc.exitCode === 0) {
+      return { name: "Docker", status: "success", message: "Docker \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D" };
+    } else {
+      return { name: "Docker", status: "error", message: "Docker \u043D\u0435 \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D" };
+    }
+  } catch {
+    return { name: "Docker", status: "error", message: "Docker \u043D\u0435 \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D" };
+  }
+}
+async function ensureCaddyNetwork() {
+  try {
+    const proc = spawn("docker", ["network", "ls", "--format", "{{.Name}}"], { stdio: "pipe" });
+    const stdout = await new Promise((resolve) => {
+      let output = "";
+      proc.stdout.on("data", (data) => {
+        output += data.toString();
+      });
+      proc.on("close", () => resolve(output));
+    });
+    if (stdout.includes("caddy")) {
+      return { name: "\u0421\u0435\u0442\u044C caddy", status: "success", message: "\u0421\u0435\u0442\u044C \u0443\u0436\u0435 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442" };
+    }
+    const createProc = spawn("docker", ["network", "create", "caddy"], { stdio: "pipe" });
+    await new Promise((resolve) => {
+      createProc.on("close", () => resolve());
+    });
+    if (createProc.exitCode === 0) {
+      return { name: "\u0421\u0435\u0442\u044C caddy", status: "success", message: "\u0421\u0435\u0442\u044C \u0441\u043E\u0437\u0434\u0430\u043D\u0430" };
+    } else {
+      return { name: "\u0421\u0435\u0442\u044C caddy", status: "error", message: "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u0441\u043E\u0437\u0434\u0430\u0442\u044C \u0441\u0435\u0442\u044C" };
+    }
+  } catch (error) {
+    return { name: "\u0421\u0435\u0442\u044C caddy", status: "error", message: `\u041E\u0448\u0438\u0431\u043A\u0430: ${error}` };
+  }
+}
+function checkCaddyFiles(caddyPath) {
+  const dockerComposePath = join4(caddyPath, "docker-compose.yml");
+  const configDir = join4(caddyPath, "config");
+  const caddyfilePath = join4(configDir, "Caddyfile");
+  return {
+    dockerCompose: existsSync4(dockerComposePath),
+    caddyfile: existsSync4(caddyfilePath)
+  };
+}
+async function setupCaddyFiles(caddyPath) {
+  try {
+    const configDir = join4(caddyPath, "config");
+    const dataDir = join4(caddyPath, "data");
+    if (!existsSync4(configDir)) {
+      mkdirSync(configDir, { recursive: true });
+    }
+    if (!existsSync4(dataDir)) {
+      mkdirSync(dataDir, { recursive: true });
+    }
+    const dockerComposePath = join4(caddyPath, "docker-compose.yml");
+    const caddyfilePath = join4(configDir, "Caddyfile");
+    if (!existsSync4(dockerComposePath)) {
+      copyFileSync(join4(TEMPLATES_DIR, "docker-compose.yml"), dockerComposePath);
+    }
+    if (!existsSync4(caddyfilePath)) {
+      copyFileSync(join4(TEMPLATES_DIR, "Caddyfile"), caddyfilePath);
+    }
+    return { name: "\u0424\u0430\u0439\u043B\u044B Caddy", status: "success", message: "\u041A\u043E\u043D\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u044F \u0441\u043E\u0437\u0434\u0430\u043D\u0430" };
+  } catch (error) {
+    return { name: "\u0424\u0430\u0439\u043B\u044B Caddy", status: "error", message: `\u041E\u0448\u0438\u0431\u043A\u0430: ${error}` };
+  }
+}
+async function runSystemCheck(caddyPath) {
+  console.log("");
+  console.log("\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557");
+  console.log("\u2551                    \u041D\u0410\u0421\u0422\u0420\u041E\u0419\u041A\u0410 \u0421\u0418\u0421\u0422\u0415\u041C\u042B                        \u2551");
+  console.log("\u255A\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255D");
+  console.log("");
+  printCheck({ name: "\u041F\u0440\u043E\u0432\u0435\u0440\u043A\u0430", status: "info", message: "\u041D\u0430\u0447\u0438\u043D\u0430\u0435\u043C \u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0443 \u0441\u0438\u0441\u0442\u0435\u043C\u044B..." });
+  console.log("");
+  const dockerCheck = await checkDockerInstalled();
+  printCheck(dockerCheck);
+  if (dockerCheck.status === "error") {
+    console.log("");
+    console.log("\u274C \u0414\u043B\u044F \u0440\u0430\u0431\u043E\u0442\u044B \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u044B \u0442\u0440\u0435\u0431\u0443\u0435\u0442\u0441\u044F Docker.");
+    console.log("   \u0423\u0441\u0442\u0430\u043D\u043E\u0432\u0438\u0442\u0435 Docker: https://docs.docker.com/engine/install/");
+    console.log("");
+    process.exit(1);
+  }
+  const networkCheck = await ensureCaddyNetwork();
+  printCheck(networkCheck);
+  console.log("");
+  const filesCheck = checkCaddyFiles(caddyPath);
+  if (!filesCheck.dockerCompose || !filesCheck.caddyfile) {
+    printCheck({ name: "\u041A\u043E\u043D\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u044F", status: "info", message: "\u0421\u043E\u0437\u0434\u0430\u0435\u043C \u0444\u0430\u0439\u043B\u044B \u043A\u043E\u043D\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u0438..." });
+    console.log("");
+    const setupResult = await setupCaddyFiles(caddyPath);
+    printCheck(setupResult);
+    console.log("");
+    console.log("\u2139\uFE0F  \u0424\u0430\u0439\u043B\u044B \u0441\u043E\u0437\u0434\u0430\u043D\u044B \u043F\u043E \u043F\u0443\u0442\u0438: " + caddyPath);
+    console.log("   \u0412\u044B \u043C\u043E\u0436\u0435\u0442\u0435 \u0437\u0430\u043F\u0443\u0441\u0442\u0438\u0442\u044C Caddy: cd " + caddyPath + " && docker-compose up -d");
+    console.log("");
+  } else {
+    printCheck({ name: "\u0424\u0430\u0439\u043B\u044B Caddy", status: "success", message: "\u041A\u043E\u043D\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u044F \u0443\u0436\u0435 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442" });
+    console.log("");
+  }
+  console.log("\u2705 \u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0430 \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043D\u0430! \u041C\u043E\u0436\u043D\u043E \u043F\u0440\u043E\u0434\u043E\u043B\u0436\u0430\u0442\u044C \u0440\u0430\u0431\u043E\u0442\u0443.");
+  console.log("");
+}
+
 // src/main.ts
 var containers = [];
 async function setupCaddyPath() {
@@ -2880,7 +3009,7 @@ async function setupCaddyPath() {
   if (savedConfig?.caddyPath) {
     setCaddyPath(savedConfig.caddyPath);
     const caddyfilePath2 = getCaddyfilePath();
-    if (existsSync4(caddyfilePath2)) {
+    if (existsSync5(caddyfilePath2)) {
       printSuccess(`\u0418\u0441\u043F\u043E\u043B\u044C\u0437\u0443\u0435\u0442\u0441\u044F \u0441\u043E\u0445\u0440\u0430\u043D\u0451\u043D\u043D\u044B\u0439 \u043F\u0443\u0442\u044C: ${savedConfig.caddyPath}`);
       return true;
     }
@@ -2910,7 +3039,11 @@ async function setupCaddyPath() {
   const caddyPath = (typeof pathInput === "string" ? pathInput : defaultPath) || defaultPath;
   setCaddyPath(caddyPath);
   const caddyfilePath = getCaddyfilePath();
-  if (!existsSync4(caddyfilePath)) {
+  const filesCheck = checkCaddyFiles(caddyPath);
+  if (!filesCheck.dockerCompose || !filesCheck.caddyfile) {
+    await runSystemCheck(caddyPath);
+  }
+  if (!existsSync5(caddyfilePath)) {
     printError(`Caddyfile \u043D\u0435 \u043D\u0430\u0439\u0434\u0435\u043D \u043F\u043E \u043F\u0443\u0442\u0438: ${caddyfilePath}`);
     return false;
   }
@@ -2965,11 +3098,13 @@ async function handleAdd(currentSites) {
   return newSites;
 }
 async function handleEdit(site, currentSites) {
-  printInfo(`\u0422\u0435\u043A\u0443\u0449\u0430\u044F \u043A\u043E\u043D\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u044F: ${site.domain} \u2192 ${site.container_name}:${site.container_port || "80"}`);
+  const portDisplay = site.container_port && site.container_port !== "80" ? `:${site.container_port}` : "";
+  printInfo(`\u0422\u0435\u043A\u0443\u0449\u0430\u044F \u043A\u043E\u043D\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u044F: ${site.domain} \u2192 ${site.container_name}${portDisplay}`);
   const container = await selectContainer(containers, currentSites);
   if (!container)
     return currentSites;
-  const confirmed = await confirmAction(`\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u043A\u043E\u043D\u0442\u0435\u0439\u043D\u0435\u0440 \u043D\u0430 ${container.name}:${container.port}?`);
+  const containerPortDisplay = container.port && container.port !== "80" ? `:${container.port}` : "";
+  const confirmed = await confirmAction(`\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u043A\u043E\u043D\u0442\u0435\u0439\u043D\u0435\u0440 \u043D\u0430 ${container.name}${containerPortDisplay}?`);
   if (!confirmed)
     return currentSites;
   const newSites = currentSites.map((s) => s.domain === site.domain ? { ...s, container_name: container.name, container_port: container.port } : s);
@@ -2981,15 +3116,15 @@ async function handleEdit(site, currentSites) {
   return newSites;
 }
 async function handleEditPort(site, currentSites) {
-  printInfo(`\u0422\u0435\u043A\u0443\u0449\u0438\u0439 \u043F\u043E\u0440\u0442: ${site.container_port || "80"}`);
+  printInfo(`\u0422\u0435\u043A\u0443\u0449\u0438\u0439 \u043F\u043E\u0440\u0442: ${site.container_port || "\u043D\u0435 \u0443\u043A\u0430\u0437\u0430\u043D"}`);
   const newPort = await askPort(site.container_port);
-  if (!newPort)
+  if (newPort === null)
     return currentSites;
-  const confirmed = await confirmAction(`\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u043F\u043E\u0440\u0442 \u043D\u0430 ${newPort}?`);
+  const confirmed = await confirmAction(newPort ? `\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u043F\u043E\u0440\u0442 \u043D\u0430 ${newPort}?` : "\u0418\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u044C \u043F\u043E\u0440\u0442 \u043F\u043E \u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E?");
   if (!confirmed)
     return currentSites;
   const newSites = currentSites.map((s) => s.domain === site.domain ? { ...s, container_port: newPort } : s);
-  printSuccess(`\u041F\u043E\u0440\u0442 \u0434\u043B\u044F ${site.domain} \u0438\u0437\u043C\u0435\u043D\u0451\u043D \u043D\u0430 ${newPort}`);
+  printSuccess(newPort ? `\u041F\u043E\u0440\u0442 \u0434\u043B\u044F ${site.domain} \u0438\u0437\u043C\u0435\u043D\u0451\u043D \u043D\u0430 ${newPort}` : `\u041F\u043E\u0440\u0442 \u0434\u043B\u044F ${site.domain} \u0441\u0431\u0440\u043E\u0448\u0435\u043D \u043D\u0430 \u043F\u043E\u0440\u0442 \u043F\u043E \u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E`);
   const save = await confirmAction("\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C \u043A\u043E\u043D\u0444\u0438\u0433 \u0438 \u043F\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C Caddy?");
   if (save) {
     await saveAndReload(newSites);
